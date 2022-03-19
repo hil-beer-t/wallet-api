@@ -1,5 +1,6 @@
 package com.hilbert.wallet.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.validation.constraints.*;
@@ -9,6 +10,7 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
 
     private Long id;
