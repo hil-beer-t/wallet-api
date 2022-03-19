@@ -17,8 +17,7 @@ public class UserDTO {
     private String name;
 
     @NotNull
-    @Min(value = 6, message = "O número de caracteres mínimo na SENHA é 6")
-    @Max(value = 50, message = "O número de caracteres máximo NA SENHA 30")
+    @Size(min = 6, max = 30, message = "O senha deve conter entre 6 e 30 caracteres")
     private String password;
 
     @Email(message = "Email inválido")
