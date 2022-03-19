@@ -11,7 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@Table(name = "tb_user")
+@Table(name = "users")
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
