@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -30,7 +31,7 @@ public class WalletItemRepositoryTest {
     private Long savedWalletId = null;
 
     @Autowired
-    WalletItemRepository repository;
+    WalletItemRepository walletItemRepository;
 
     @Autowired
     WalletRepository walletRepository;
@@ -43,7 +44,7 @@ public class WalletItemRepositoryTest {
         walletRepository.save(w);
 
         WalletItem wi = new WalletItem(null, w, DATE, TYPE, DESCRIPTION, VALUE);
-        repository.save(wi);
+        walletItemRepository.save(wi);
 
         savedWalletItemId = wi.getId();
         savedWalletId = w.getId();
@@ -51,7 +52,7 @@ public class WalletItemRepositoryTest {
 
     @After
     public void tearDown() {
-        repository.deleteAll();
+        walletItemRepository.deleteAll();
         walletRepository.deleteAll();
     }
 
@@ -64,7 +65,7 @@ public class WalletItemRepositoryTest {
         walletRepository.save(w);
 
         WalletItem wi = new WalletItem(1L, w, DATE, TYPE, DESCRIPTION, VALUE);
-        WalletItem response = repository.save(wi);
+        WalletItem response = walletItemRepository.save(wi);
 
         assertNotNull(response);
         assertEquals(response.getDescription(), DESCRIPTION);
@@ -72,5 +73,11 @@ public class WalletItemRepositoryTest {
         assertEquals(response.getValue(), VALUE);
         assertEquals(response.getType(), TYPE);
         assertEquals(response.getWallet().getId(), w.getId());
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testSaveInvalidWalletItem(){
+        WalletItem wi = new WalletItem(null, null, DATE, null, DESCRIPTION, null);
+        walletItemRepository.save(wi);
     }
 }
