@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -79,5 +80,26 @@ public class WalletItemRepositoryTest {
     public void testSaveInvalidWalletItem(){
         WalletItem wi = new WalletItem(null, null, DATE, null, DESCRIPTION, null);
         walletItemRepository.save(wi);
+    }
+
+    @Test
+    public void testUpdate(){
+        Optional<WalletItem> wi = walletItemRepository.findById(savedWalletItemId);
+
+        String description = "Descrição alterada";
+
+        WalletItem changed = wi.orElse(null);
+
+        assert changed != null;
+
+        changed.setDescription(description);
+
+        walletItemRepository.save(changed);
+
+        Optional<WalletItem> newWalletItem = walletItemRepository.findById(savedWalletItemId);
+
+        assert newWalletItem.isPresent();
+
+        assertEquals(description, newWalletItem.get().getDescription());
     }
 }
