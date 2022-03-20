@@ -3,6 +3,7 @@ package com.hilbert.wallet.repository;
 import com.hilbert.wallet.entity.Wallet;
 import com.hilbert.wallet.entity.WalletItem;
 import com.hilbert.wallet.util.Type;
+import org.checkerframework.checker.nullness.Opt;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,8 +18,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -101,5 +101,22 @@ public class WalletItemRepositoryTest {
         assert newWalletItem.isPresent();
 
         assertEquals(description, newWalletItem.get().getDescription());
+    }
+
+    @Test
+    public void deleteWalletItem(){
+        Optional<Wallet> wallet = walletRepository.findById(savedWalletId);
+        assert wallet.isPresent();
+
+        WalletItem wi = new WalletItem(null, wallet.get(), DATE, TYPE, DESCRIPTION, VALUE);
+
+        walletItemRepository.save(wi);
+
+        walletItemRepository.deleteById(wi.getId());
+
+        Optional<WalletItem> response = walletItemRepository.findById(wi.getId());
+
+        assertFalse(response.isPresent());
+
     }
 }
