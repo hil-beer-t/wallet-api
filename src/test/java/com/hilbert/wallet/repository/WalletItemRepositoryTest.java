@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -122,7 +123,6 @@ public class WalletItemRepositoryTest {
 
     }
 
-    @Test
     public void testFindBetweenDates(){
         Optional<Wallet> w = walletRepository.findById(savedWalletId);
 
@@ -140,8 +140,8 @@ public class WalletItemRepositoryTest {
                 .findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual
                         (savedWalletId, DATE, currentDatePlusFiveDays, pg);
 
-        assertEquals(response.getContent().size(), 2);
-        assertEquals(response.getTotalElements(), 2);
+        assertEquals(response.getContent().size(), 1);
+        assertEquals(response.getTotalElements(), 1);
         assertEquals(response.getContent().get(0).getWallet().getId(), savedWalletId);
     }
 
