@@ -3,7 +3,6 @@ package com.hilbert.wallet.service.impl;
 import com.hilbert.wallet.entity.User;
 import com.hilbert.wallet.repository.UserRepository;
 import com.hilbert.wallet.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
