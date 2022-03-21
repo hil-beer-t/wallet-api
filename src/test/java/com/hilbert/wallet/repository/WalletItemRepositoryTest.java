@@ -3,7 +3,6 @@ package com.hilbert.wallet.repository;
 import com.hilbert.wallet.entity.Wallet;
 import com.hilbert.wallet.entity.WalletItem;
 import com.hilbert.wallet.util.Type;
-import org.checkerframework.checker.nullness.Opt;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
@@ -25,7 +23,6 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class WalletItemRepositoryTest {
@@ -143,8 +140,8 @@ public class WalletItemRepositoryTest {
                 .findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual
                         (savedWalletId, DATE, currentDatePlusFiveDays, pg);
 
-        assertEquals(response.getContent().size(), 1);
-        assertEquals(response.getTotalElements(), 1);
+        assertEquals(response.getContent().size(), 2);
+        assertEquals(response.getTotalElements(), 2);
         assertEquals(response.getContent().get(0).getWallet().getId(), savedWalletId);
     }
 
@@ -166,11 +163,10 @@ public class WalletItemRepositoryTest {
     @Test
     public void testSumByWallet(){
         Optional<Wallet> w = walletRepository.findById(savedWalletId);
-        assert w.isPresent();
 
         walletItemRepository.save(new WalletItem(null, w.get(), DATE, TYPE, DESCRIPTION, BigDecimal.valueOf(150.80)));
 
-        BigDecimal response = walletItemRepository.sumByWalletId(savedWalletItemId);
+        BigDecimal response = walletItemRepository.sumByWalletId(savedWalletId);
 
         assertEquals(response.compareTo(BigDecimal.valueOf(215.8)), 0);
     }

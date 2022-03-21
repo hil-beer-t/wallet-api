@@ -1,10 +1,10 @@
-package com.hilbert.wallet.service;
+package com.hilbert.wallet.service.impl;
 
 import com.hilbert.wallet.entity.WalletItem;
 import com.hilbert.wallet.repository.WalletItemRepository;
+import com.hilbert.wallet.service.WalletItemService;
 import com.hilbert.wallet.util.Type;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -12,12 +12,16 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class WalletItemServiceImpl implements WalletItemService{
+public class WalletItemServiceImpl implements WalletItemService {
 
-    @Autowired
-    WalletItemRepository walletItemRepository;
+    private final WalletItemRepository walletItemRepository;
+
+    public WalletItemServiceImpl(WalletItemRepository walletItemRepository) {
+        this.walletItemRepository = walletItemRepository;
+    }
 
     @Override
     public WalletItem save(WalletItem i) {
@@ -43,5 +47,15 @@ public class WalletItemServiceImpl implements WalletItemService{
     @Override
     public BigDecimal sumByWalletId(Long wallet) {
         return walletItemRepository.sumByWalletId(wallet);
+    }
+
+    @Override
+    public Optional<WalletItem> findById(Long id) {
+        return walletItemRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        walletItemRepository.deleteById(id);
     }
 }
