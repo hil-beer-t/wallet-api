@@ -32,7 +32,7 @@ public class WalletItemRepositoryTest {
     private static final Date DATE = new Date();
     private static final Type TYPE = Type.EN;
     private static final String DESCRIPTION = "Conta de luz";
-    private static final BigDecimal VALUE= BigDecimal.valueOf(50);
+    private static final BigDecimal VALUE= BigDecimal.valueOf(65);
     private Long savedWalletItemId = null;
     private Long savedWalletId = null;
 
@@ -161,5 +161,17 @@ public class WalletItemRepositoryTest {
         Optional<Wallet> w = walletRepository.findById(savedWalletId);
         assert w.isPresent();
         walletItemRepository.save(new WalletItem(null, w.get(), DATE, Type.SD, DESCRIPTION, VALUE));
+    }
+
+    @Test
+    public void testSumByWallet(){
+        Optional<Wallet> w = walletRepository.findById(savedWalletId);
+        assert w.isPresent();
+
+        walletItemRepository.save(new WalletItem(null, w.get(), DATE, TYPE, DESCRIPTION, BigDecimal.valueOf(150.80)));
+
+        BigDecimal response = walletItemRepository.sumByWalletId(savedWalletItemId);
+
+        assertEquals(response.compareTo(BigDecimal.valueOf(215.8)), 0);
     }
 }
