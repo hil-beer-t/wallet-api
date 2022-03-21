@@ -5,6 +5,8 @@ import com.hilbert.wallet.repository.WalletItemRepository;
 import com.hilbert.wallet.service.WalletItemService;
 import com.hilbert.wallet.util.Type;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class WalletItemServiceImpl implements WalletItemService {
     }
 
     @Override
+    @CacheEvict(value = "findByWalletAndType", allEntries = true)
     public WalletItem save(WalletItem i) {
         return walletItemRepository.save(i);
     }
@@ -40,6 +43,7 @@ public class WalletItemServiceImpl implements WalletItemService {
     }
 
     @Override
+    @Cacheable(value = "findByWalletAndType")
     public List<WalletItem> findByWalletAndType(Long wallet, Type type) {
         return walletItemRepository.findByWalletIdAndType(wallet, type);
     }
@@ -55,6 +59,7 @@ public class WalletItemServiceImpl implements WalletItemService {
     }
 
     @Override
+    @CacheEvict(value = "findByWalletAndType", allEntries = true)
     public void deleteById(Long id) {
         walletItemRepository.deleteById(id);
     }
