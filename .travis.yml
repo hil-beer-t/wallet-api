@@ -3,16 +3,9 @@ dist: trusty
 language: java
 jdk:
   - oraclejdk8
-addons:
-  postgresql: "13.6"
-before_script:
-  - psql -c "create database d3b868jj63lghi;" -U postgres
-  - sudo -u postgres psql -c "ALTER ROLE postgres WITH password 'b23fd83b4021336ac6ac84deee0bada36369b5009738c3ffcf93049c1815321c'"
 before_install:
   - export TZ=Brazil/East
   - chmod +x mvnw
-services:
-  - postgresql
 deploy:
   provider: heroku
   api_key:
